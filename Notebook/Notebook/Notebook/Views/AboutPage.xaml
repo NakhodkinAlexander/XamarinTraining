@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Notebook.Views.AboutPage"
+             xmlns:vm="clr-namespace:Notebook.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">red</Color>
+        </ResourceDictionary> 
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <Grid x:Name="magicGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button BackgroundColor="Teal" x:Name="button1" Text="Not Clicked" Clicked="button1_Clicked" />
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

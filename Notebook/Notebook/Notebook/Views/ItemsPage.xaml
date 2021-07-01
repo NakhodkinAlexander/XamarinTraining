@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Notebook.Views.ItemsPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Notebook.ViewModels"  
+             xmlns:model="clr-namespace:Notebook.Models"  
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <ScrollView>
+            <StackLayout Spacing="8" Orientation="Vertical">
+                <FlexLayout x:Name="Breadcrumbs"
+                AlignContent="Start"
+                JustifyContent="Start"
+                BindableLayout.ItemsSource="{Binding SelectedItems}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Padding="0, 10, 0, 0" Text=">"/>
+                                <Label x:DataType="model:Item" Text="{Binding Text}" 
+                                   LineBreakMode="WordWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}"
+                                   Margin="10"
+                                   FontSize="16">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            NumberOfTapsRequired="1"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=BreadcrumbTapped}"		
+                                            CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+                <CollectionView x:Name="ItemsListView"
+                    ItemsSource="{Binding Items}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <FlexLayout Direction="Row"  Padding="10" x:DataType="model:Item">
+                                <ImageButton HorizontalOptions="Center"
+                                BackgroundColor="Transparent"
+                                Margin="3"
+                                VerticalOptions="CenterAndExpand" 
+                                Source="chevron_right_dark.png" />
+                                <Label Text="{Binding Text}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}"
+                                FlexLayout.Grow="1"                            
+                                FontSize="16">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
+                                        CommandParameter="{Binding .}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <ImageButton HorizontalOptions="Center"
+                                BackgroundColor="Transparent"
+                                Margin="3"
+                                VerticalOptions="CenterAndExpand" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ViewInfoCommand}"
+                                CommandParameter="{Binding .}"
+                                Source="search.png" />
+                                <ImageButton HorizontalOptions="Center"
+                                BackgroundColor="Transparent"
+                                Margin="3"
+                                VerticalOptions="CenterAndExpand" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=AddChildCommand}"
+                                CommandParameter="{Binding .}"
+                                Source="add_dark.png" />
+                            </FlexLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
